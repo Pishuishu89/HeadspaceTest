@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sports Health Tracker</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <h1>Sports Health Tracker</h1>
+        <div class="menu">
+            <button onclick="selectRole('coach')">Coach</button>
+            <button onclick="selectRole('doctor')">Doctor</button>
+            <button onclick="selectRole('player')">Player</button>
+        </div>
+
+        <div id="loginSection" class="hidden">
+            <input type="text" id="nameInput" placeholder="Enter your name">
+            <button onclick="login()">Login</button>
+            <button onclick="cancelLogin()">Cancel</button>
+        </div>
+
+        <div id="dashboard" class="hidden"></div>
+
+        <!-- ESP Sensor Data Section -->
+        <div id="espDataSection" class="hidden">
+            <h2>Live ESP Sensor Data</h2>
+            <p><strong>Acceleration:</strong> <span id="acceleration">Loading...</span> m/s²</p>
+            <p><strong>Rotational:</strong> <span id="rotational">Loading...</span> deg/s</p>
+            <p><strong>Jerk:</strong> <span id="jerk">Loading...</span> m/s³</p>
+            <p><strong>Force:</strong> <span id="force">Loading...</span> N</p>
+        </div>
+
+        <!-- Red Sign Out Button -->
+        <button id="signOutButton" class="sign-out-button hidden" onclick="signOut()">Sign Out</button>
+    </div>
+
+    <script src="script.js"></script>
+
+    <!-- Script to Fetch and Display ESP Data -->
+    <script>
+        async function fetchESPData() {
+            try {
+                const response = await fetch("http://localhost:3000/get-data"); // Change to your backend IP if needed
+                const data = await response.json();
+
+                // Update webpage with sensor values
+                document.getElementById("acceleration").innerText = data.acceleration || "N/A";
+                document.getElementById("rotational").innerText = data.rotational || "N/A";
+                document.getElementById("jerk").innerText = data.jerk || "N/A";
+                document.getElementById("force").innerText = data.force || "N/A";
+
+                // Show the ESP data section after login
+                document.getElementById("espDataSection").classList.remove("hidden");
+            } catch (error) {
+                console.error("Error fetching ESP data:", error);
+            }
+        }
+
+        setInterval(fetchESPData, 5000); // Fetch new data every 5 seconds
+    </script>
+
+</body>
+</html>
+
