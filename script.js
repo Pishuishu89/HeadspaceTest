@@ -131,7 +131,7 @@ function openBrainImages() {
         </head>
         <body>
             <h1>Brain Scan Images</h1>
-            <img src="brain.jpg" alt="Brain Image 1">
+            <img src="brain.png" alt="Brain Image 1">
             <img src="brain 2.jpg" alt="Brain Image 2">
             <h2>Doctor's Notes</h2>
             <p>${savedNotes}</p>
@@ -139,8 +139,36 @@ function openBrainImages() {
         </html>
     `);
 }
+function openBrainImages() {
+    const savedNotes = localStorage.getItem("doctorNotes") || "No notes available.";
 
-// Sign Out Function
-function signOut() {
-    location.reload();
+    // Open a new tab
+    const newWindow = window.open("", "_blank");
+
+    // Write the HTML structure
+    newWindow.document.write(`
+        <html>
+        <head>
+            <title>Brain Scan & Damage Graph</title>
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+            <style>
+                body { text-align: center; font-family: Arial, sans-serif; }
+                img { width: 45%; margin: 10px; }
+                canvas { margin-top: 20px; width: 80%; height: 300px; }
+            </style>
+        </head>
+        <body>
+            <h1>Brain Scan Images</h1>
+            <img src="brain.png" alt="Brain Image 1">
+            <img src="brain 2.jpg" alt="Brain Image 2">
+            
+            <h2>Doctor's Notes</h2>
+            <p>${savedNotes}</p>
+            
+            <h2>Damage Severity Over Time</h2>
+            <img src="graph.png" alt="Damage Graph">
+
+        </body>
+        </html>
+    `);
 }
